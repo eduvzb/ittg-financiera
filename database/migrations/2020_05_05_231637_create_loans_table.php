@@ -15,14 +15,21 @@ class CreateLoansTable extends Migration
     {
         Schema::create('loans', function (Blueprint $table) {
             $table->id();
-
-            $table->unsignedBigInteger('client_id');
-
+            $table->unsignedBigInteger('client_id'); //Cliente
+            $table->decimal('amount');
+            $table->integer('payments_number');
+            $table->decimal('fee');
+            $table->date('ministry_date');
+            $table->date('due_date');
+            $table->tinyinteger('finished');
             $table->timestamps();
 
+            //Llave foranea 
             $table->foreign('client_id')
                 ->references('id')
                 ->on('clients');
+
+
         });
     }
 

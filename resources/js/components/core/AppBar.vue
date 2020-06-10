@@ -61,49 +61,7 @@
       <v-icon>mdi-view-dashboard</v-icon>
     </v-btn>
 
-    <v-menu
-      bottom
-      left
-      offset-y
-      origin="top right"
-      transition="scale-transition"
-    >
-      <template v-slot:activator="{ attrs, on }">
-        <v-btn
-          class="ml-2"
-          min-width="0"
-          text
-          v-bind="attrs"
-          v-on="on"
-        >
-          <v-badge
-            color="red"
-            overlap
-            bordered
-          >
-            <template v-slot:badge>
-              <span>5</span>
-            </template>
-
-            <v-icon>mdi-account</v-icon>
-          </v-badge>
-        </v-btn>
-      </template>
-
-      <v-list
-        :tile="false"
-        nav
-      >
-        <div>
-          <app-bar-item
-            v-for="(n, i) in notifications"
-            :key="`item-${i}`"
-          >
-            <v-list-item-title v-text="n" />
-          </app-bar-item>
-        </div>
-      </v-list>
-    </v-menu>
+    
 
    <button @click="logout" type="button" class="ml-2 v-btn v-btn--flat v-btn--text theme--light v-size--default" style="min-width: 0px;"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-account theme--light"></i></span></button>
 

@@ -6,7 +6,10 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
     state: {
+        barColor: 'rgba(0, 0, 0, .8), rgba(0, 0, 0, .8)',
+        barImage: 'https://demos.creative-tim.com/material-dashboard/assets/img/sidebar-2.jpg',
         drawerOpen: true,
+        drawer: null,
         isAuthenticated: JSON.parse(localStorage.getItem('auth')) || false,
         user: {}
     },
@@ -39,6 +42,12 @@ const store = new Vuex.Store({
         }
     },
     mutations: {
+        SET_BAR_IMAGE (state, payload) {
+            state.barImage = payload
+        },
+        SET_DRAWER (state, payload) {
+        state.drawer = payload
+        },
         SET_USER (state, user) {
             state.user = user;
             state.isAuthenticated = Boolean(user);

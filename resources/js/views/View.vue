@@ -41,9 +41,14 @@
 
 <script>
 import Navigation from '@/js/components/Navigation';
+import AppBar from '@/js/components/core/AppBar.vue'
+
+import Drawer from '@/js/components/core/Drawer.vue'
 export default {
     components: {
-        navigation: Navigation
+        navigation: Navigation,
+        AppBar,
+        Drawer,
     },
     computed: {
         drawerOpen () {

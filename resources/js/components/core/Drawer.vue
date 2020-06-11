@@ -114,7 +114,7 @@
         {
           icon: 'mdi-account',
           title: 'Clientes',
-          to: '/clientes',
+          to: '/clients',
         },
         {
           title: 'Prestamos',

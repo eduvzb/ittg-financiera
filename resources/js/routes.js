@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 import store from '@/js/stores';
 
 import Home from '@/js/components/Home';
-import About from '@/js/components/About';
+import Clients from '@/js/pages/clients';
 import Login from '@/js/pages/LoginPage';
 import View from '@/js/views/View';
 
@@ -22,9 +22,9 @@ const router = new VueRouter({
                     component: Home
                 },
                 {
-                    path: '/about',
-                    name: 'about',
-                    component: About
+                    path: '/clients',
+                    name: 'clients',
+                    component: Clients
                 },
             ]
         },

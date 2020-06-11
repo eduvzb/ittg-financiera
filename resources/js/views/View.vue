@@ -2,8 +2,8 @@
     <v-app>
        <AppBar /> 
        <Drawer /> <!-- Barra lateral -->
-      <v-content>
-        <div class="p-5">
+      <v-content class="">
+        <div class="px-5 py-2">
           <router-view /> <!-- esto es lo que cambia -->
         </div>
       </v-content>

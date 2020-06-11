@@ -14,10 +14,8 @@ class ClientsController extends Controller
      */
     public function index()
     {
-        $clients = Client::all();
-        return view('clients.index', [
-            'clients' => $clients,
-        ]);
+        $clients = Client::all(); 
+        return response()->json($clients);
     }
 
     /**
@@ -50,7 +48,7 @@ class ClientsController extends Controller
             'address' => $request->input('address'),
         ]);
 
-        return redirect()->route('clients.index');
+        return response()->json(true);
     }
 
     /**

@@ -8,43 +8,41 @@
           v-bind="attrs"
           v-on="on"
         >
-          Open Dialog
+          Nuevo cliente
         </v-btn>
       </template>
       <v-card>
         <v-card-title>
-          <span class="headline">User Profile</span>
+          <span class="headline">Datos del cliente</span>
         </v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field label="Legal first name*" 
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field label="Nombre*" 
                 required
                 v-model="value.name"
                 >
                 </v-text-field>
               </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field label="Legal middle name" 
-                hint="example of helper text only on focus"
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field label="Telefono*" 
                 v-model="value.phone"
                 >
                 </v-text-field>
               </v-col>
-              <v-col cols="12" sm="6" md="4">
+            </v-row>
+            <v-row>
+              <v-col cols="12" sm="6" md="12">
                 <v-text-field
-                  label="Legal last name*"
-                  hint="example of persistent helper text"
-                  persistent-hint
+                  label="Dirección*"
                   required
                   v-model="value.address"
                 ></v-text-field>
               </v-col>
-              
             </v-row>
           </v-container>
-          <small>*indicates required field</small>
+          <small>*Indica los campos obligatorios</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>

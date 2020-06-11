@@ -82,7 +82,7 @@ class ClientsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
     }
 
     /**
@@ -94,9 +94,14 @@ class ClientsController extends Controller
     public function destroy($id)
     {
         $client = Client::find($id);
-
+        foreach ($client->loans as $loan){
+            foreach($loan->payments as $payment){
+                $payment->delete();
+            }
+            $loan->delete();
+        }
         $client->delete();
 
-        return $client;
+        return response()->json(true);
     }
 }

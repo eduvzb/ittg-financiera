@@ -4,20 +4,30 @@
       fluid
       tag="section"
     >
-      <button @click="update">Actualizar</button>
-      <FormClient v-model="client"
-      @submit="save"
-      ></FormClient>
-      <v-data-table 
-        :headers="headers"
-        :items="clients"
-         class="elevation-1"
-      > 
-      <template v-slot:item.Actions="{ item }">
-        <button @click="deleteItem(item)">Delete</button>
-      </template>
-
-      </v-data-table>
+      <v-card>
+        <v-card-title>
+            Clientes
+            <FormClient v-model="client"
+            @submit="save"
+            ></FormClient>
+        </v-card-title>
+          <v-data-table 
+          :headers="headers"
+          :items="clients"
+          class="elevation-1"
+          > 
+            <template v-slot:item.Actions="{ item }">
+                <div class="my-2">
+                  <v-btn color="error" 
+                  fab x-small dark
+                  @click="deleteItem(item)"
+                  >
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </div>
+            </template>
+          </v-data-table>
+      </v-card>
   </v-container>
 </template>
 
@@ -60,16 +70,21 @@
     methods: {
       deleteItem (item){
         const index = this.clients.indexOf(item)
-        console.log(this.clients[index].id);
-      },
-      update (){
+        const id = this.clients[index].id;
+        console.log(id);
+          axios.post('/api/clients/delete/' + id)
+            .then(response => {
+              this.getClients();
+            })
+            .catch(error => {
+              console.log(error);
+            });
       },
       save (){
          axios.post('/api/clients',this.client)
                   .then(response => {
                     console.log(response);
                      this.getClients();
-
                   })
                   .catch(error => {
                       console.log('Catch error', error);

@@ -4,6 +4,7 @@ import store from '@/js/stores';
 
 import Home from '@/js/components/Home';
 import Clients from '@/js/pages/clients';
+import Loans from '@/js/pages/loans';
 import Login from '@/js/pages/LoginPage';
 import View from '@/js/views/View';
 
@@ -25,6 +26,11 @@ const router = new VueRouter({
                     path: '/clients',
                     name: 'clients',
                     component: Clients
+                },
+                {
+                    path: '/loans',
+                    name: 'loans',
+                    component: Loans
                 },
             ]
         },

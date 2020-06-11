@@ -101,7 +101,6 @@ class ClientsController extends Controller
             $loan->delete();
         }
         $client->delete();
-
         return response()->json(true);
     }
 }

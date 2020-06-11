@@ -13,9 +13,9 @@ const store = new Vuex.Store({
         isAuthenticated: JSON.parse(localStorage.getItem('auth')) || false,
         user: {},
         clients: [],
+        loans: [],
     },
     actions: {
-
         getClient ({ commit }){
             return new Promise((resolve, reject) => {
               axios.get('/api/clients')

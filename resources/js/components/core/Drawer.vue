@@ -119,12 +119,12 @@
         {
           title: 'Prestamos',
           icon: 'mdi-clipboard-outline',
-          to: '/tables/regular-tables',
+          to: '/loans',
         },
         {
           title: 'Pagos',
           icon: 'mdi-cash-plus',
-          to: '/components/typography',
+          to: '/payments',
         },
         {
           title: 'Ajustes',

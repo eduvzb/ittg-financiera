@@ -7,24 +7,34 @@
       <v-card>
         <v-card-title>
             Clientes
-            <FormClient v-model="client"
-            @submit="save"
+            <FormClient 
+            v-model="client"
+            @submit="choose" 
+            :openModal="openModal"
+            @changeModal="changeModal"
             ></FormClient>
         </v-card-title>
           <v-data-table 
           :headers="headers"
           :items="clients"
-          class="elevation-1"
+           class="elevation-1"
+          :sort-by="['id']"
           > 
             <template v-slot:item.Actions="{ item }">
-                <div class="my-2">
-                  <v-btn color="error" 
-                  fab x-small dark
-                  @click="deleteItem(item)"
-                  >
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
-            </div>
+                 <div class="my-2">
+                    <v-btn color="error" 
+                    fab x-small dark
+                    @click="deleteItem(item)"
+                    >
+                        <v-icon>mdi-delete</v-icon>
+                    </v-btn>
+                    <v-btn color="primary" 
+                    fab x-small dark
+                    @click="findClient(item)"
+                    >
+                      <v-icon>mdi-pencil</v-icon>
+                    </v-btn>
+                  </div> 
             </template>
           </v-data-table>
       </v-card>
@@ -40,12 +50,13 @@
     components: {
       FormClient
     },
+    
     data: function () {
       return {
         client: {
-          name: 'Test',
-          phone: '123123',
-          address: 'aasdasd'
+          name: '',
+          phone: '',
+          address: ''
         },
         headers: [
           { text: 'id', value: 'id' },
@@ -54,44 +65,64 @@
           { text: 'Dirección ', value: 'address' },
           { text: 'Opciones ', value: 'Actions' },
         ],
-        items: [
-          { name: 'Eduardo', phone: '123123', address: 'asdsadasd', Actions:''}
-        ]
+        openModal: false,
+        editing: false,  
       }
     },
     computed: {
-        ...mapState({
-            clients: state=>state.clients
-          })
+      ...mapState({
+          clients: state=>state.clients,
+          clientSelected: state=>state.client
+        })
     },
     mounted () {
       this.getClients();
     },
     methods: {
       deleteItem (item){
-        const index = this.clients.indexOf(item)
-        const id = this.clients[index].id;
-        console.log(id);
-          axios.post('/api/clients/delete/' + id)
-            .then(response => {
-              this.getClients();
-            })
-            .catch(error => {
-              console.log(error);
-            });
-      },
+      const index = this.clients.indexOf(item)
+      const id = this.clients[index].id;
+        axios.post('/api/clients/delete/' + id)
+          .then(response => {
+            this.getClients();
+          })
+          .catch(error => {
+            console.log(error);
+          });
+    },
       save (){
-         axios.post('/api/clients',this.client)
-                  .then(response => {
-                    console.log(response);
-                     this.getClients();
-                  })
-                  .catch(error => {
-                      console.log('Catch error', error);
-                  });        
+        console.log(this.client);
+        axios.post('/api/clients',this.client)
+          .then(response => {
+            console.log(response);
+              this.getClients();
+          })
+            .catch(error => {
+              console.log('Catch error', error);
+            });     
+      },
+      edit (){
+
+      },
+      choose (){
+        if(this.editing == true){
+          this.edit();
+        }else
+          this.save();
       },
       getClients: function () {
-        this.$store.dispatch('getClient');
+        this.$store.dispatch('getClients');
+      },
+      async findClient (item){
+        this.editing = true;
+        const index = this.clients.indexOf(item)
+        const id = this.clients[index].id;
+        await this.$store.dispatch('getClient', id);
+          this.client = Object.assign({}, this.client, this.clientSelected)
+            this.openModal = true;
+      },
+      changeModal: function (modal){
+        this.openModal = modal;
       }
     }
   }

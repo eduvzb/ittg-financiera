@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Loan;
+use App\Models\Client;
+use App\Models\Payment;
+use Carbon\Carbon;
 
 class LoansController extends Controller
 {
@@ -36,7 +39,35 @@ class LoansController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $loan = new Loan();
+        $loan->client_id = $request->client_id;
+        $loan->amount = $request->amount;
+        $loan->payments_number = $request->payments_number;
+        $loan->fee = $request->fee;
+        $loan->ministry_date = $request->ministry_date;
+        $loan->due_date = $request->due_date;
+        $loan->finished = 0;
+        $loan->save();
+        $date = Carbon::createFromDate($loan->ministry_date); //Guarda la fecha en la varible date
+        
+        $count = 0;
+        while($count < $loan->payments_number)
+        {
+            $date->addDay(); //Incrementa un día a la fecha date
+            if($date->isWeekday()) //Verificar si date es día de semana
+            {
+                $payment = new Payment();
+                $payment->client_id = $loan->client_id;
+                $payment->loan_id = $loan->id;
+                $payment->number = $count+1;
+                $payment->amount = $loan->fee;
+                $payment->received_amount = 0;
+                $payment->payment_date = $date;
+                $payment->save();
+                $count++;
+            }
+        }
+        return response()->json(true);
     }
 
     /**
@@ -81,6 +112,18 @@ class LoansController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $loan = Loan::find($id);
+        foreach($loan->payments as $payment)
+        {
+            $payment->delete();
+        }
+        $loan->delete();
+        return response()->json(true);
+    }
+
+    public function fillSelectClient ()
+    {
+        $clients = Client::select('id','name')->get();
+        return response()->json($clients);
     }
 }

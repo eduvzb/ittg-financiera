@@ -24,6 +24,14 @@ Route::middleware('auth:sanctum')
     ->get('/clients', 'ClientsController@index');
 Route::middleware('auth:sanctum')
     ->post('/clients', 'ClientsController@store');
+Route::middleware('auth:sanctum')
+    ->get('/client/{id}', 'ClientsController@edit');
 
 Route::middleware('auth:sanctum')
     ->get('/loans', 'LoansController@index');
+Route::middleware('auth:sanctum')
+    ->post('/loan', 'LoansController@store');
+Route::middleware('auth:sanctum')
+    ->get('/loans/clients', 'LoansController@fillSelectClient');    
+Route::middleware('auth:sanctum')
+    ->post('/loan/delete/{id}', 'LoansController@destroy');

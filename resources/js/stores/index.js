@@ -14,41 +14,83 @@ const store = new Vuex.Store({
         user: {},
         clients: [],
         loans: [],
+        clientsNames:[],
+        client: {},
     },
     actions: {
-        getClient ({ commit }){
+        etClient ({ commit }, id){
+          return new Promise((resolve, reject) => {
+            axios.get('/api/client/' + id)
+              .then(response => {
+                  resolve();
+                  commit('SET_CLIENT', response.data);
+              })
+              .catch(error => {
+                  resolve()
+                  commit('SET_CLIENT', null);
+              });
+           });
+          },
+        getClient ({ commit }, id){
+            return new Promise((resolve, reject) => {
+              axios.get('/api/client/' + id)
+                .then(response => {
+                    resolve();
+                    commit('SET_CLIENT', response.data);
+                })
+                .catch(error => {
+                    resolve()
+                    commit('SET_CLIENT', null);
+                });
+           });
+          },
+
+        fillSelectClient ({ commit }){
+            return new Promise((resolve, reject) => {
+              axios.get('/api/loans/clients')
+                .then(response => {
+                    resolve();
+                    commit('SET_CLIENTS_NAMES', response.data);
+                })
+                .catch(error => {
+                    resolve()
+                    commit('SET_CLIENTS_NAMES', null);
+                });
+           });
+          },
+        getClients ({ commit }){
             return new Promise((resolve, reject) => {
               axios.get('/api/clients')
-                  .then(response => {
-                      resolve();
-                      commit('SET_CLIENT', response.data);
-                  })
-                  .catch(error => {
-                      resolve()
-                      commit('SET_CLIENT', null);
-                  });
+                .then(response => {
+                    resolve();
+                    commit('SET_CLIENTS', response.data);
+                })
+                .catch(error => {
+                    resolve()
+                    commit('SET_CLIENTS', null);
+                });
            });
           },
 
           getLoans ({ commit }){
             return new Promise((resolve, reject) => {
               axios.get('/api/loans')
-                  .then(response => {
-                      resolve();
-                      commit('SET_LOANS', response.data);
-                  })
-                  .catch(error => {
-                      resolve();
-                      commit('SET_LOANS', null);
-                  });
+                .then(response => {
+                    resolve();
+                    commit('SET_LOANS', response.data);
+                })
+                .catch(error => {
+                    resolve();
+                    commit('SET_LOANS', null);
+                });
            });
           },
 
 
         async login ({ dispatch }, credentials) {
-            await axios.get('/sanctum/csrf-cookie');
-            await axios.post('/login', credentials);
-            return dispatch('getUser');
+          await axios.get('/sanctum/csrf-cookie');
+          await axios.post('/login', credentials);
+          return dispatch('getUser');
         },
         async logout({ dispatch }) {
             await axios.post('/logout');
@@ -57,19 +99,19 @@ const store = new Vuex.Store({
 
         getUser ({ commit }) {
             return new Promise((resolve, reject) => {
-                axios.get('/api/user')
-                    .then(response => {
-                        resolve();
-                        commit('SET_USER', response.data);
-                    })
-                    .catch(error => {
-                        resolve()
-                        commit('SET_USER', null);
-                    });
+              axios.get('/api/user')
+                .then(response => {
+                    resolve();
+                    commit('SET_USER', response.data);
+                })
+                .catch(error => {
+                    resolve()
+                    commit('SET_USER', null);
+                });
             });
         },
         drawerToggle ({ commit }) {
-            commit('DRAWER_TOGGLE');
+          commit('DRAWER_TOGGLE');
         }
     },
     mutations: {
@@ -87,13 +129,18 @@ const store = new Vuex.Store({
         DRAWER_TOGGLE(state) {
             state.drawerOpen = !state.drawerOpen;
         },
-        SET_CLIENT(state, payload){
+        SET_CLIENTS(state, payload){
             state.clients = payload;
         },
         SET_LOANS(state, payload){
             state.loans = payload;
         },
-
+        SET_CLIENTS_NAMES(state, payload){
+            state.clientsNames = payload;
+        },
+        SET_CLIENT(state, payload){
+            state.client = payload;
+        },
     },
     getters: {}
 });

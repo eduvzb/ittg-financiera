@@ -20,8 +20,11 @@
             <v-row>
               <v-col cols="12" sm="6" md="6">
                 <v-select
-                :items="items"
-                label="Filled style"
+                :items="clientsNames"
+                label="Cliente"
+                item-text="name"
+                item-value="id"
+                v-model="value.client_id"
                 ></v-select>
               </v-col>
               <v-col cols="12" sm="6" md="6">
@@ -29,7 +32,7 @@
                 label="Cantidad*" 
                 prefix="$"
                 type="number"
-                v-model="value.phone"
+                v-model="value.amount"
                 >
                 </v-text-field>
               </v-col>
@@ -40,7 +43,7 @@
                   label="Número de pagos*"
                   required
                   type="number"
-                  v-model="value.address"
+                  v-model="value.payments_number"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
@@ -48,7 +51,7 @@
                   label="Cuota*"
                   required
                   type="number"
-                  v-model="value.address"
+                  v-model="value.fee"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -58,7 +61,7 @@
                   label="Fecha de ministración*"
                   required
                   type="date"
-                  v-model="value.address"
+                  v-model="value.ministry_date"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
@@ -66,7 +69,7 @@
                   label="Fecha de vencimiento*"
                   required
                   type="date"
-                  v-model="value.address"
+                  v-model="value.due_date"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -75,7 +78,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+          <v-btn color="blue darken-1" text @click="closeDialog">Close</v-btn>
           <v-btn color="blue darken-1" text @click="submit">Save</v-btn>
         </v-card-actions>
       </v-card>
@@ -84,34 +87,53 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
     name: 'FormLoan',
     data: () => ({
       dialog: false,
-      clearable: false,
-      items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
     }),
+    watch: {
+      openModal: function (){
+      this.dialog = this.openModal;  
+      }
+    },
     props: {
-        value:{
-            type: Object,
-            default: function () {
-                return {
-                    name: '',
-                    phone: '',
-                    address: '',
-                }
-            }
+      value:{
+        type: Object,
+        default: function () {
+          return {
+            client_id:'',
+            amount: '',
+            payments_number: '',
+            fee: '',
+            ministry_date :'',
+            due_date :'',
+          }
+        }
         },
+      openModal: {
+        type: Boolean,
+        default: false,
+      }
+    },
+    computed: {
+        ...mapState({
+            clientsNames: state=>state.clientsNames
+          })
     },
     methods: {
         submit: function () {
             this.dialog = false;
-            this.$emit('submit',this.value);
+            this.$emit('submit', this.value);
+        },
+        changeModal: function (){
+          this.$emit('changeModal', this.dialog)
+        },
+        closeDialog: function (){
+          this.dialog = false;
+          this.changeModal();
         }
     }
 }
 </script>
-
-<style>
-
-</style>

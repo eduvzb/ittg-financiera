@@ -40,13 +40,13 @@
                   v-model="value.address"
                 ></v-text-field>
               </v-col>
-            </v-row>
+              </v-row>
           </v-container>
           <small>*Indica los campos obligatorios</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+          <v-btn color="blue darken-1" text @click="closeDialog">Close</v-btn>
           <v-btn color="blue darken-1" text @click="submit">Save</v-btn>
         </v-card-actions>
       </v-card>
@@ -60,27 +60,39 @@ export default {
     data: () => ({
       dialog: false,
     }),
+    watch: {
+      openModal: function (){
+        this.dialog = this.openModal;  
+      }
+    },
     props: {
-        value:{
-            type: Object,
-            default: function () {
-                return {
-                    name: '',
-                    phone: '',
-                    address: '',
-                }
-            }
-        },
+      value:{
+        type: Object,
+        default: function () {
+          return {
+            name: '',
+            phone: '',
+            address: '',
+          }
+        }
+      },
+      openModal: {
+        type: Boolean,
+        default: false,
+      }
     },
     methods: {
         submit: function () {
-            this.dialog = false;
-            this.$emit('submit',this.value);
+          this.dialog = false;
+          this.$emit('submit',this.value);
+        },
+        changeModal: function (){
+          this.$emit('changeModal', this.dialog)
+        },
+        closeDialog: function (){
+          this.dialog = false;
+          this.changeModal();
         }
     }
 }
 </script>
-
-<style>
-
-</style>

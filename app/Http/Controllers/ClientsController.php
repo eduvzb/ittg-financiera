@@ -70,7 +70,8 @@ class ClientsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $Client = Client::find($id);
+        return response()->json($Client);
     }
 
     /**

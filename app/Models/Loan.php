@@ -47,4 +47,5 @@ class Loan extends Model
     {
         return $this->payments()->where('paid',1)->count();   
     }
+
 }

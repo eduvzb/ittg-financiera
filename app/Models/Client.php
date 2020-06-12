@@ -14,4 +14,9 @@ class Client extends Model
     {
         return $this->hasMany('App\Models\Loan');
     }
+
+    public function getNameClientAttribute()
+    {
+        return $this->name;
+    }
 }

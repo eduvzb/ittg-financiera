@@ -6,24 +6,38 @@
     >
       <v-card>
         <v-card-title>
-            Prestamos
-            <formLoan>
-            </formLoan>
+          Prestamos
+          <formLoan
+          v-model="loan"
+          @submit = "choose"
+          :openModal="openModal"
+          @changeModal="changeModal"
+          >
+          </formLoan>
         </v-card-title>
           <v-data-table 
           :headers="headers"
           :items="loans"
           class="elevation-1"
           > 
+          <template v-slot:item.name="{ item }">
+            {{ item.client.name }}
+          </template>
             <template v-slot:item.Actions="{ item }">
-                <div class="my-2">
-                  <v-btn color="error" 
-                  fab x-small dark
-                  @click="deleteItem(item)"
-                  >
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
-            </div>
+              <div class="my-2">
+                <v-btn color="error" 
+                fab x-small dark
+                @click="deleteItem(item)"
+                >
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+                <v-btn color="primary" 
+                fab x-small dark
+                @click="findClient(item)"
+                >
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+              </div> 
             </template>
           </v-data-table>
       </v-card>
@@ -41,10 +55,15 @@
     },
     data: function () {
       return {
-        client: {
-          name: '',
-          phone: '',
-          address: ''
+        editing: false,
+        openModal: false,
+        loan: {
+          client_id: '',
+          amount: '',
+          payments_number: '',
+          fee: '',
+          ministry_date: '',
+          due_date: ''
         },
         headers: [
           { text: 'id', value: 'id' },
@@ -54,26 +73,57 @@
           { text: 'Cuota ', value: 'fee' },
           { text: 'Fecha de ministración ', value: 'ministry_date' },
           { text: 'Fecha de vencimiento', value: 'due_date' },
-          { text: 'Acciones', value: '' },
+          { text: 'Acciones', value: 'Actions' },
         ],
-        items: [
-          { name: 'Eduardo', phone: '123123', address: 'asdsadasd', Actions:''}
-        ]
       }
     },
     computed: {
         ...mapState({
-            loans: state=>state.loans
+            loans: state=>state.loans,
+            clientsNames: state=>state.clientsNames,
         })
     },
     mounted () {
       this.getLoans();
+      this.fillSelectClient();
     },
     methods: {
-        getLoans (){
-            this.$store.dispatch('getLoans');
-        }
-    },
-    
+      changeModal (flag){
+        this.openModal = flag;
+      },
+      choose (){
+        if(this.editing)
+          this.edit()
+        else
+          this.save()
+      },
+      edit (){
+        //
+      },
+      save (){
+        axios.post('/api/loan', this.loan)
+          .then( response => {
+            this.getLoans();
+          })
+          .catch(error => 'error')
+      },
+      getLoans (){
+          this.$store.dispatch('getLoans');
+      },
+      fillSelectClient (){
+      this.$store.dispatch('fillSelectClient');
+      },
+      deleteItem(item){
+        const index = this.loans.indexOf(item)
+        const id = this.loans[index].id;
+        axios.post('/api/loan/delete/' + id)
+          .then(response => {
+            this.getLoans();
+          })
+          .catch(error => {
+            console.log(error);
+          })
+      }
+    }
   }
 </script>

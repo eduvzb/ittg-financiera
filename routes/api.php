@@ -25,3 +25,5 @@ Route::middleware('auth:sanctum')
 Route::middleware('auth:sanctum')
     ->post('/clients', 'ClientsController@store');
 
+Route::middleware('auth:sanctum')
+    ->get('/loans', 'LoansController@index');

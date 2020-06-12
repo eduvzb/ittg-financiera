@@ -7,9 +7,8 @@
       <v-card>
         <v-card-title>
             Prestamos
-            <FormClient v-model="client"
-            @submit="save"
-            ></FormClient>
+            <formLoan>
+            </formLoan>
         </v-card-title>
           <v-data-table 
           :headers="headers"
@@ -33,12 +32,12 @@
 
 <script>
   import { mapState } from 'vuex'
-  import FormClient from '@/js/components/FormClient.vue'
+  import formLoan from '@/js/components/FormLoan.vue'
   const axios = require("axios");
   export default {
     name: 'clients',
     components: {
-      FormClient
+      formLoan
     },
     data: function () {
       return {
@@ -50,9 +49,12 @@
         headers: [
           { text: 'id', value: 'id' },
           { text: 'Nombre', value: 'name' },
-          { text: 'Telefono', value: 'phone' },
-          { text: 'Dirección ', value: 'address' },
-          { text: 'Opciones ', value: 'Actions' },
+          { text: 'Cantidad', value: 'amount' },
+          { text: 'Número de pagos ', value: 'payments_number' },
+          { text: 'Cuota ', value: 'fee' },
+          { text: 'Fecha de ministración ', value: 'ministry_date' },
+          { text: 'Fecha de vencimiento', value: 'due_date' },
+          { text: 'Acciones', value: '' },
         ],
         items: [
           { name: 'Eduardo', phone: '123123', address: 'asdsadasd', Actions:''}
@@ -60,13 +62,18 @@
       }
     },
     computed: {
-       loans: function () {}
+        ...mapState({
+            loans: state=>state.loans
+        })
     },
     mounted () {
-      //
+      this.getLoans();
     },
     methods: {
-        //
-    }
+        getLoans (){
+            this.$store.dispatch('getLoans');
+        }
+    },
+    
   }
 </script>

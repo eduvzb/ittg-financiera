@@ -20,17 +20,30 @@ const store = new Vuex.Store({
             return new Promise((resolve, reject) => {
               axios.get('/api/clients')
                   .then(response => {
-                    console.log(response);
                       resolve();
                       commit('SET_CLIENT', response.data);
                   })
                   .catch(error => {
-                      console.log('Catch error', error);
                       resolve()
                       commit('SET_CLIENT', null);
                   });
            });
           },
+
+          getLoans ({ commit }){
+            return new Promise((resolve, reject) => {
+              axios.get('/api/loans')
+                  .then(response => {
+                      resolve();
+                      commit('SET_LOANS', response.data);
+                  })
+                  .catch(error => {
+                      resolve();
+                      commit('SET_LOANS', null);
+                  });
+           });
+          },
+
 
         async login ({ dispatch }, credentials) {
             await axios.get('/sanctum/csrf-cookie');
@@ -76,7 +89,11 @@ const store = new Vuex.Store({
         },
         SET_CLIENT(state, payload){
             state.clients = payload;
-        }
+        },
+        SET_LOANS(state, payload){
+            state.loans = payload;
+        },
+
     },
     getters: {}
 });

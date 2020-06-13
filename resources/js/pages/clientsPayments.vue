@@ -4,41 +4,50 @@
       fluid
       tag="section"
     >
+      <v-row>
+        <v-col
+        :md="6"
+        >
+          <v-card>
+            Prestamos
+          </v-card>
+        </v-col>
+        <v-col
+        :md="6"
+        >
+          <v-card class="pa-5">
+            <v-form>
+              <v-row>
+                <v-col
+                :md="6"
+                >
+                  <v-text-field
+                  v-model="amount"
+                  label="Ingrese cantidad"
+                  prefix="$"
+                  type="number"
+                  required
+                  >
+                </v-text-field>
+              </v-col>
+              <v-col>
+                <div class="my-3">
+                  <v-btn color="primary">Primary</v-btn>
+                </div>
+              </v-col>
+             </v-row>
+            </v-form> 
+          </v-card>
+        </v-col>
+      </v-row>
       <v-card>
         <v-card-title>
-          Prestamos
-          <formLoan
-          v-model="loan"
-          @submit = "choose"
-          :openModal="openModal"
-          @changeModal="changeModal"
-          >
-          </formLoan>
         </v-card-title>
           <v-data-table 
           :headers="headers"
-          :items="loans"
+          :items="payments"
           class="elevation-1"
           > 
-          <template v-slot:item.name="{ item }">
-            {{ item.client.name }}
-          </template>
-            <template v-slot:item.Actions="{ item }">
-              <div class="my-2">
-                <v-btn color="error" 
-                fab x-small dark
-                @click="deleteItem(item)"
-                >
-                  <v-icon>mdi-delete</v-icon>
-                </v-btn>
-                <v-btn color="primary" 
-                fab x-small dark
-                @click="findClient(item)"
-                >
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
-              </div> 
-            </template>
           </v-data-table>
       </v-card>
   </v-container>
@@ -46,10 +55,19 @@
 
 <script>
 export default {
-    name:'clientsPayments'
+    name:'clientsPayments',
+    data: function () {
+      return { 
+        amount: 0,
+        headers: [],
+        payments: [],
+      }
+    },
+    methods: {
+      getPaymens(){
+        this.store.dispatch('getPaymens');
+      }
+    }
 }
 </script>
 
-<style>
-
-</style>

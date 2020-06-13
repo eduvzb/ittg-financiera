@@ -13,8 +13,6 @@
             fab 
             color="primary"
             dark
-            v-bind="attrs"
-            v-on="on"
             >
             <v-icon dark>mdi-download</v-icon>
           </v-btn>

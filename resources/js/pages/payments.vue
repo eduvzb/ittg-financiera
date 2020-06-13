@@ -5,8 +5,19 @@
       tag="section"
     >
       <v-card>
-        <v-card-title>
+        <v-card-title
+        class="d-flex justify-space-between"
+        >
           Prestamos
+          <v-btn
+            fab 
+            color="primary"
+            dark
+            v-bind="attrs"
+            v-on="on"
+            >
+            <v-icon dark>mdi-download</v-icon>
+          </v-btn>
         </v-card-title>
           <v-data-table 
           :headers="headers"

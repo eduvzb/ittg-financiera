@@ -20,6 +20,9 @@
           :items="loans"
           class="elevation-1"
           > 
+          <template v-slot:top>
+            
+          </template>
           <template v-slot:item.name="{ item }">
             {{ item.client.name }}
           </template>

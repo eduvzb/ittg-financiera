@@ -1,14 +1,16 @@
 <template>
-  <v-row justify="center">
+  <v-row justify="end">
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
         <v-btn
+          class="mx-3"
+          fab 
           color="primary"
           dark
           v-bind="attrs"
           v-on="on"
         >
-          Nuevo cliente
+           <v-icon dark>mdi-plus</v-icon>
         </v-btn>
       </template>
       <v-card>

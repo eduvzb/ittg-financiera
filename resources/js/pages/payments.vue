@@ -16,11 +16,12 @@
           <template v-slot:item.name="{ item }">
             {{ item.client.name }}
           </template>
+          
             <template v-slot:item.Actions="{ item }">
               <div class="my-2">
                 <v-btn color="primary" 
                 fab x-small dark
-                @click="findClient(item)"
+                :to="{ name: 'clientPayments', params: {id: item.id} }"
                 >
                   <v-icon>mdi-eye</v-icon>
                 </v-btn>

@@ -16,6 +16,12 @@ class Loan extends Model
         'finished'
     ];
 
+    protected $appends = [
+        'saldo_abonado',
+        'saldo_pendiente',
+        'pagos_completados'
+    ];
+
     public function client()
     {
         return $this->belongsTo('App\Models\Client');

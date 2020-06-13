@@ -35,3 +35,6 @@ Route::middleware('auth:sanctum')
     ->get('/loans/clients', 'LoansController@fillSelectClient');    
 Route::middleware('auth:sanctum')
     ->post('/loan/delete/{id}', 'LoansController@destroy');
+
+Route::middleware('auth:sanctum')
+    ->get('/payments/index', 'LoansController@index');    

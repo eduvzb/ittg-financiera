@@ -7,17 +7,10 @@
       <v-card>
         <v-card-title>
           Prestamos
-          <formLoan
-          v-model="loan"
-          @submit = "choose"
-          :openModal="openModal"
-          @changeModal="changeModal"
-          >
-          </formLoan>
         </v-card-title>
           <v-data-table 
           :headers="headers"
-          :items="loans"
+          :items="payments"
           class="elevation-1"
           > 
           <template v-slot:item.name="{ item }">
@@ -25,17 +18,11 @@
           </template>
             <template v-slot:item.Actions="{ item }">
               <div class="my-2">
-                <v-btn color="error" 
-                fab x-small dark
-                @click="deleteItem(item)"
-                >
-                  <v-icon>mdi-delete</v-icon>
-                </v-btn>
                 <v-btn color="primary" 
                 fab x-small dark
                 @click="findClient(item)"
                 >
-                  <v-icon>mdi-pencil</v-icon>
+                  <v-icon>mdi-eye</v-icon>
                 </v-btn>
               </div> 
             </template>
@@ -46,12 +33,12 @@
 
 <script>
   import { mapState } from 'vuex'
-  import formLoan from '@/js/components/FormLoan.vue'
+  //import formLoan from '@/js/components/FormLoan.vue'
   const axios = require("axios");
   export default {
     name: 'payments',
     components: {
-      formLoan
+      //formLoan
     },
     data: function () {
       return {
@@ -69,18 +56,18 @@
           { text: 'id', value: 'id' },
           { text: 'Nombre', value: 'name' },
           { text: 'Cantidad', value: 'amount' },
-          { text: 'Número de pagos ', value: 'payments_number' },
           { text: 'Cuota ', value: 'fee' },
-          { text: 'Fecha de ministración ', value: 'ministry_date' },
-          { text: 'Fecha de vencimiento', value: 'due_date' },
+          { text: 'Número de pagos ', value: 'payments_number' },
+          { text: 'Pagos completados ', value: 'pagos_completados' },
+          { text: 'Pagos abonado ', value: 'saldo_abonado' },
+          { text: 'Saldo pendiente ', value: 'saldo_pendiente' },
           { text: 'Acciones', value: 'Actions' },
         ],
       }
     },
     computed: {
         ...mapState({
-            loans: state=>state.loans,
-            clientsNames: state=>state.clientsNames,
+            payments: state=>state.paymentsIndex,
         })
     },
     mounted () {

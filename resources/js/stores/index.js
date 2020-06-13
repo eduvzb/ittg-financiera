@@ -16,18 +16,19 @@ const store = new Vuex.Store({
         loans: [],
         clientsNames:[],
         client: {},
+        paymentsIndex: [],
     },
     actions: {
-        etClient ({ commit }, id){
+        getPaymentsIndex ({ commit }){
           return new Promise((resolve, reject) => {
-            axios.get('/api/client/' + id)
+            axios.get('/api/payments/index')
               .then(response => {
                   resolve();
-                  commit('SET_CLIENT', response.data);
+                  commit('SET_PAYMENTS_INDEX', response.data);
               })
               .catch(error => {
                   resolve()
-                  commit('SET_CLIENT', null);
+                  commit('SET_PAYMENTS_INDEX', null);
               });
            });
           },
@@ -86,7 +87,6 @@ const store = new Vuex.Store({
            });
           },
 
-
         async login ({ dispatch }, credentials) {
           await axios.get('/sanctum/csrf-cookie');
           await axios.post('/login', credentials);
@@ -140,6 +140,9 @@ const store = new Vuex.Store({
         },
         SET_CLIENT(state, payload){
             state.client = payload;
+        },
+        SET_PAYMENTS_INDEX(state, payload){
+            state.paymentsIndex = payload;
         },
     },
     getters: {}

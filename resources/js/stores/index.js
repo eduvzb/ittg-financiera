@@ -17,8 +17,21 @@ const store = new Vuex.Store({
         clientsNames:[],
         client: {},
         paymentsIndex: [],
+        payments: [],
     },
     actions: {
+        getPayments ({ commit }, id){
+          console.log(id);
+          return new Promise((resolve, reject) => {
+              axios.get('/api/payments/show/' + id)
+                .then((response) => {
+                  commit('SET_PAYMENTS', response.data);
+                })
+                .catch((error) =>{
+                  commit('SET_PAYMENTS', null);
+                })
+           });
+          },
         getPaymentsIndex ({ commit }){
           return new Promise((resolve, reject) => {
             axios.get('/api/payments/index')
@@ -143,6 +156,9 @@ const store = new Vuex.Store({
         },
         SET_PAYMENTS_INDEX(state, payload){
             state.paymentsIndex = payload;
+        },
+        SET_PAYMENTS(state, payload){
+          state.payments = payload;
         },
     },
     getters: {}

@@ -29,6 +29,7 @@
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field label="Telefono*" 
+                required
                 v-model="value.phone"
                 >
                 </v-text-field>

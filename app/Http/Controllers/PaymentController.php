@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Loan;
+use App\Models\Payment;
+use Carbon\Carbon;
 
 class PaymentController extends Controller
 {
@@ -33,9 +36,44 @@ class PaymentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
-        //
+        $payments = Payment::where('loan_id', $id)
+        ->where('paid',0)
+        ->orderBy('number')
+        ->get();
+        $acum = $request->received_amount;
+        
+         foreach($payments as $payment)
+         {
+             $amount = $payment->amount;
+             if( $amount > $acum && $acum>0)
+             {
+                 if($acum + $payment->received_amount > $amount)
+                 {
+                     $payment->received_amount = $amount;
+                     $payment->paid = 1;
+
+                 }else{
+                    $payment->received_amount+= $acum;
+                 }
+                 $payment->receipt_date = Carbon::now();
+                    if($payment->received_amount == $amount){
+                        $payment->paid = 1;
+                    }
+                 $payment->save();
+                 break;
+             }
+             else if ($amount <= $acum){
+                 $dif = $amount - $payment->received_amount;
+                 $payment->received_amount+= $dif;
+                 $payment->paid = 1;
+                 $payment->receipt_date = Carbon::now();
+                 $payment->save();
+                 $acum-= $dif;
+             }
+         }
+        return response()->json(200);
     }
 
     /**
@@ -45,8 +83,9 @@ class PaymentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        //
+    {   
+        $loan = Loan::with('payments','client')->find($id);
+        return response()->json($loan);
     }
 
     /**

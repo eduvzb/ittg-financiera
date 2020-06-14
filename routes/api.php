@@ -37,4 +37,9 @@ Route::middleware('auth:sanctum')
     ->post('/loan/delete/{id}', 'LoansController@destroy');
 
 Route::middleware('auth:sanctum')
-    ->get('/payments/index', 'LoansController@index');    
+    ->get('/payments/index', 'LoansController@index');
+Route::middleware('auth:sanctum')
+    ->get('/payments/show/{id}', 'PaymentController@show');  
+Route::middleware('auth:sanctum')
+    ->post('/payments/store/{id}', 'PaymentController@store');   
+    

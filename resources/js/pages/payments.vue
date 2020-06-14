@@ -8,7 +8,7 @@
         <v-card-title
         class="d-flex justify-space-between"
         >
-          Prestamos
+          Resumen de pagos
           <v-btn
             fab 
             color="primary"
@@ -20,7 +20,8 @@
           <v-data-table 
           :headers="headers"
           :items="payments"
-          class="elevation-1"
+          :sort-by="['id']"
+           class="elevation-1"
           > 
           <template v-slot:item.name="{ item }">
             {{ item.client.name }}
@@ -43,13 +44,9 @@
 
 <script>
   import { mapState } from 'vuex'
-  //import formLoan from '@/js/components/FormLoan.vue'
   const axios = require("axios");
   export default {
     name: 'payments',
-    components: {
-      //formLoan
-    },
     data: function () {
       return {
         editing: false,
@@ -69,7 +66,7 @@
           { text: 'Cuota ', value: 'fee' },
           { text: 'Número de pagos ', value: 'payments_number' },
           { text: 'Pagos completados ', value: 'pagos_completados' },
-          { text: 'Pagos abonado ', value: 'saldo_abonado' },
+          { text: 'Saldo abonado ', value: 'saldo_abonado' },
           { text: 'Saldo pendiente ', value: 'saldo_pendiente' },
           { text: 'Acciones', value: 'Actions' },
         ],

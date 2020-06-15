@@ -13,6 +13,7 @@
             fab 
             color="primary"
             dark
+            @click="donwload"
             >
             <v-icon dark>mdi-download</v-icon>
           </v-btn>
@@ -20,7 +21,7 @@
           <v-data-table 
           :headers="headers"
           :items="payments"
-          :sort-by="['id']"
+          :sort-by="['id']" 
            class="elevation-1"
           > 
           <template v-slot:item.name="{ item }">
@@ -81,6 +82,14 @@
       this.getPaymentsIndex();
     },
     methods: {
+      donwload(){
+        window.open('http://financiera.test.local/api/payments/download', '_blank');
+        /* axios.get('/api/payments/donwload')
+          .then(response => {
+            console.log('descargado')
+          })
+          .catch(error => 'error') */
+      },
       changeModal (flag){
         this.openModal = flag;
       },

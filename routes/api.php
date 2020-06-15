@@ -42,4 +42,6 @@ Route::middleware('auth:sanctum')
     ->get('/payments/show/{id}', 'PaymentController@show');  
 Route::middleware('auth:sanctum')
     ->post('/payments/store/{id}', 'PaymentController@store');   
+
+Route::get('/payments/download', 'LoansController@exportExcel');
     

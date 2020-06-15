@@ -7,6 +7,7 @@ import Clients from '@/js/pages/clients';
 import Loans from '@/js/pages/loans';
 import Payments from '@/js/pages/payments';
 import ClientsPayments from '@/js/pages/clientsPayments';
+import UserEdit from '@/js/pages/UserEdit';
 import Login from '@/js/pages/LoginPage';
 import View from '@/js/views/View';
 
@@ -43,6 +44,11 @@ const router = new VueRouter({
                     path: '/payments/:id',
                     name: 'clientPayments',
                     component: ClientsPayments
+                },
+                {
+                    path: '/user-edit',
+                    name: 'UserEdit',
+                    component: UserEdit
                 },
             ]
         },

@@ -127,9 +127,9 @@
           to: '/payments',
         },
         {
-          title: 'Ajustes',
+          title: 'Usuario',
           icon: 'mdi-chart-bubble',
-          to: '',
+          to: '/user-edit',
         },
       ],
     }),

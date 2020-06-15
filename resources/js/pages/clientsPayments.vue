@@ -12,7 +12,7 @@
             <v-list-item v-if="client">
               <v-list-item-content>
                 <v-list-item-title>
-                  <strong>Clientess:</strong>
+                  <strong>Cliente:</strong>
                   {{ client.name }}
                 </v-list-item-title>
               </v-list-item-content>
@@ -21,7 +21,7 @@
             <v-list-item>
               <v-list-item-content>
                 <v-list-item-title>
-                  <strong >Total abonado:</strong>
+                  <strong >Total abonado: $</strong>
                    {{ payment.saldo_abonado}}
                 </v-list-item-title>
               </v-list-item-content>
@@ -30,7 +30,7 @@
             <v-list-item>
               <v-list-item-content>
                 <v-list-item-title>
-                  <strong >Total pendiente:</strong>
+                  <strong >Total pendiente: $</strong>
                    {{ payment.saldo_pendiente}}
                 </v-list-item-title>
               </v-list-item-content>
@@ -78,8 +78,11 @@
           :items="payments"
            class="elevation-1"
           :sort-by="['number']"
+          item-key="number"
+          :loading="carga"
           > 
           </v-data-table>
+         
       </v-card>
   </v-container>
 </template>
@@ -101,6 +104,7 @@ export default {
           { text: 'Fecha de pago ', value: 'payment_date' },
           { text: 'Fecha de abono ', value: 'receipt_date' },
         ],
+        carga: true,
       }
     },
     methods: {
@@ -123,13 +127,13 @@ export default {
     mounted () {
       let id = this.$route.params.id
       this.getPayments(id) 
-      this.amount = '' 
+      this.amount = ''
     },
     computed: {
       ...mapState({
         payments: state=>state.payments.payments,
         client: state=>state.payments.client,
-        payment: state=>state.payments
+        payment: state=>state.payments,
       })
     }
 }

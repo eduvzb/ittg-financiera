@@ -8,6 +8,9 @@ use App\Models\Client;
 use App\Models\Payment;
 use Carbon\Carbon;
 
+use App\Exports\LoanExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class LoansController extends Controller
 {
     /**
@@ -19,6 +22,11 @@ class LoansController extends Controller
     {
         $loans = Loan::with('client')->get();
         return response()->json($loans);
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new LoanExport, 'resumen-pagos.xlsx');
     }
 
     /**

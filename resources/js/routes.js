@@ -7,7 +7,7 @@ import Clients from '@/js/pages/clients';
 import Loans from '@/js/pages/loans';
 import Payments from '@/js/pages/payments';
 import ClientsPayments from '@/js/pages/clientsPayments';
-import UserEdit from '@/js/pages/UserEdit';
+import UserEdit from '@/js/pages/User';
 import Login from '@/js/pages/LoginPage';
 import View from '@/js/views/View';
 

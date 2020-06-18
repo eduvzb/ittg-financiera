@@ -10,6 +10,7 @@
               <v-col md="8">
                 <v-row>
                     <v-text-field
+                    v-model="value.old_password"
                     outlined
                     label="Contraseña actual"
                     :append-icon="showPassword ? 'mdi-eye': 'mdi-eye-off'"
@@ -20,6 +21,7 @@
                 </v-row>
                 <v-row>
                     <v-text-field
+                     v-model="value.password"
                     outlined
                     label="Contraseña nueva"
                     :append-icon="showPassword2 ? 'mdi-eye': 'mdi-eye-off'"
@@ -30,6 +32,7 @@
                 </v-row>  
                 <v-row>
                     <v-text-field
+                    v-model="value.password_confirmation"
                     outlined
                     label="Confirmar contraseña"
                     :append-icon="showPassword3 ? 'mdi-eye': 'mdi-eye-off'"
@@ -40,7 +43,7 @@
                 </v-row>
                 <v-row justify="end">
                    <v-btn 
-                    class="my-4"
+                    @click="submit"
                     >
                     Guardar</v-btn>
                 </v-row>
@@ -56,9 +59,28 @@
 export default {
      name: 'userPassword',
      data: () => ({
-       showPassword: false,
-       showPassword2: false,
-       showPassword3: false
-     })
+      showPassword: false,
+      showPassword2: false,
+      showPassword3: false,
+      value: {
+          type: Object,
+          default: function (){
+            return {
+              old_password:'',
+              password:'',
+              password_confirmation: '',
+            }
+          }
+      }
+    }),
+    methods: {
+      submit () {
+        axios.post('/api/user-password', this.value)
+          .then(response => {
+            console.log(response)
+          })
+          .catch(error => console.log(error))
+      }
+    }
 }
 </script>

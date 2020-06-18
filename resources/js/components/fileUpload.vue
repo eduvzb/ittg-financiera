@@ -2,13 +2,13 @@
 <div id="app">
     <div class="container px-0">
       <!--UPLOAD-->
-      <form enctype="multipart/f    orm-data" novalidate v-if="isInitial">
+      <form enctype="multipart/form-data" novalidate v-if="isInitial">
         <!-- <h1>Upload images</h1> -->
-        <div class="dropbox">
+        <div class="">
           <input type="file" multiple :name="uploadFieldName" :disabled="isSaving" @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length"
-            class="input-file">
+            class="">
             <p v-if="isInitial">
-              Arrastre aquí sus archivos<br> o haga clic para buscar
+             
             </p>
             <p v-if="isSaving">
               Subiendo {{ fileCount }} archivo(s)...
@@ -139,7 +139,7 @@
   .input-file {
     opacity: 0; /* invisible but it's there! */
     width: 100%;
-    height: 200px;
+    height: 100px;
     position: absolute;
     cursor: pointer;
   }

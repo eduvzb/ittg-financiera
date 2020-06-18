@@ -20,7 +20,7 @@ class LoansController extends Controller
      */
     public function index()
     {
-        $loans = Loan::with('client')->get();
+        $loans = Loan::with('client')->orderBy('id')->get();
         return response()->json($loans);
     }
 
@@ -109,7 +109,7 @@ class LoansController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $loan = Loan::find($id);
     }
 
     /**

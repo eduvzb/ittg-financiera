@@ -19,9 +19,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:sanctum')
+    ->post('/user-password', 'UsersController@update_password');
+Route::middleware('auth:sanctum')
     ->post('/user/uploadFile', 'UsersController@uploadImage');
 Route::middleware('auth:sanctum')
     ->post('/user-edit', 'UsersController@update');
+
 
 Route::middleware('auth:sanctum')
     ->post('/clients/delete/{id}', 'ClientsController@destroy');

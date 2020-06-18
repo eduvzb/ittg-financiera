@@ -41,7 +41,7 @@ export default {
         showPassword: false,
         credentials: {
             email: 'admin@app.com',
-            password: 'password',
+            password: 'password2',
         },
         snackbar: false,
         message: ''

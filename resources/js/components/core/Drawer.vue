@@ -38,8 +38,8 @@
 
         <v-list-item-content>
           <v-list-item-title
-            class="display-1"
-            v-text="profile.title"
+            class="h3"
+            v-text="user.name"
           />
         </v-list-item-content>
       </v-list-item>
@@ -135,7 +135,7 @@
     }),
 
     computed: {
-      ...mapState(['barColor', 'barImage']),
+      ...mapState(['barColor', 'barImage','user']),
       drawer: {
         get () {
           return this.$store.state.drawer

@@ -107,6 +107,9 @@
         axios.post('/api/loan', this.loan)
           .then( response => {
             this.getLoans();
+            this.$store.dispatch('setSnackbar',{
+                  text: 'El prestamo ha sido añadido'
+                })
           })
           .catch(error => 'error')
       },

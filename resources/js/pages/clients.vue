@@ -96,6 +96,9 @@
           .then(response => {
             console.log(response);
               this.getClients();
+              this.$store.dispatch('setSnackbar',{
+                  text: 'El cliente ha sido añadido'
+                })
           })
             .catch(error => {
               console.log('Catch error', error);

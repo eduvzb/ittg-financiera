@@ -1,6 +1,5 @@
 <template>
-  <v-row
-  >
+  <v-row>
     <v-col col="12">
       <v-card>
         <v-card-title>
@@ -77,7 +76,9 @@ export default {
       submit () {
         axios.post('/api/user-password', this.value)
           .then(response => {
-            console.log(response)
+            this.$store.dispatch('setSnackbar',{
+                text: 'La contraseña ha sido modificada exitosamente'
+            })
           })
           .catch(error => console.log(error))
       }

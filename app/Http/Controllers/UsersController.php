@@ -15,7 +15,6 @@ class UsersController extends Controller
         $user = Auth::user();
         $user->name = $request->name;
         $user->email = $request->email;
-        dd($request->picture);
 
         $user->save();
 

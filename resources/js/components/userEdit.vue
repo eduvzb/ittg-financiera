@@ -1,52 +1,44 @@
 <template>
-    <v-card>
-        <v-row>
-            <v-col :md="8" :sm="6" :lg="3">
-               <v-list-item>
-                <v-list-item-content>
-                <v-avatar size="128">
-                    <img
-                        src="https://cdn.vuetifyjs.com/images/john.jpg"
-                        alt="John"
-                    >
-                    </v-avatar>
-                    <fileUpload v-model="user.picture"></fileUpload>
-                    <!-- <template>
-                      <v-file-input
-                      :v-model="user.picture"
-                      multiple label="File input"
-                      :disabled="active"
-                      >
-                      </v-file-input>
-                    </template> -->
-                </v-list-item-content>
-                </v-list-item>
-            </v-col>
-            <v-col :md="12" :lg="8">
-                <form>
-                    <v-text-field
+  <v-row>
+    <v-col col="12">
+      <v-card>
+        <v-card-title h1>
+          Editar usuario
+        </v-card-title>
+        <v-card-text>
+            <v-row justify="center" align="center">
+              <v-col md="8">
+                <v-row>
+                   <v-text-field
                     label="Name"
                     v-model="user.name"
                     required
                     outlined
                     :disabled="active"
                     ></v-text-field>
-                    <v-text-field
+                </v-row>
+                <v-row>
+                   <v-text-field
                     label="E-mail"
                     v-model="user.email"
                     required
                     outlined
                     :disabled="active"
                     ></v-text-field>
-                    <v-btn 
+                </v-row>  
+                <v-row justify="end">
+                   <v-btn 
                     class="my-4"
                     @click="check"
                     >
                     Editar</v-btn>
-                </form>
-            </v-col>
-        </v-row>
-    </v-card>
+                </v-row>
+              </v-col>
+            </v-row>
+        </v-card-text>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -77,7 +69,9 @@ export default {
 						axios.post('/api/user-edit', this.user)
 							.then (res => {
                 this.active = true
-								console.log(res)
+								this.$store.dispatch('setSnackbar',{
+                  text: 'El usario ha sido modificado exitosamente'
+                })
 							})
 							.catch(error => error)
         }

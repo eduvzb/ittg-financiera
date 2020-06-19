@@ -18,8 +18,14 @@ const store = new Vuex.Store({
         client: {},
         paymentsIndex: [],
         payments: [],
+        snackbar: {},
     },
     actions: {
+        setSnackbar ({commit}, snackbar){
+          snackbar.showing = true
+          snackbar.color = snackbar.color || 'success'
+          commit('SET_SNACKBAR' ,snackbar)
+        },
         getPayments ({ commit }, id){
           console.log(id);
           return new Promise((resolve, reject) => {
@@ -160,6 +166,9 @@ const store = new Vuex.Store({
         SET_PAYMENTS(state, payload){
           state.payments = payload;
         },
+        SET_SNACKBAR(state,snackbar){
+          state.snackbar = snackbar;
+        }
     },
     getters: {}
 });

@@ -6,13 +6,30 @@
     >
       <v-card>
         <v-card-title>
-            Clientes
-            <FormClient 
-            v-model="client"
-            @submit="choose" 
-            :openModal="openModal"
-            @changeModal="changeModal"
-            ></FormClient>
+          <v-row justify="space-between">
+            <v-col md="10" class="pa-0">
+              Clientes
+            </v-col>
+            <v-col md="2" justify="end" class="pa-0">
+              <v-row> 
+                <v-col align="end" class="ml-10 pa-0">
+                  <uploadFile/>
+                </v-col >
+                <v-col align="end" class="pa-0 mr-3"> 
+                  <FormClient 
+                  v-model="client"
+                  @submit="choose" 
+                  :openModal="openModal"
+                  @changeModal="changeModal"
+                  >
+                  </FormClient>
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
+            
+            
+           
         </v-card-title>
           <v-data-table 
           :headers="headers"
@@ -44,11 +61,13 @@
 <script>
   import { mapState } from 'vuex'
   import FormClient from '@/js/components/FormClient.vue'
+  import uploadFile from '@/js/components/uploadFile.vue'
   const axios = require("axios");
   export default {
     name: 'clients',
     components: {
-      FormClient
+      FormClient,
+      uploadFile
     },
     
     data: function () {

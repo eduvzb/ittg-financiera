@@ -25,7 +25,10 @@ Route::middleware('auth:sanctum')
 Route::middleware('auth:sanctum')
     ->post('/user-edit', 'UsersController@update');
 
-
+Route::middleware('auth:sanctum')
+    ->post('/clients/edit/{id}', 'ClientsController@update');    
+Route::middleware('auth:sanctum')
+    ->post('/clients-import', 'ClientsController@importClients');
 Route::middleware('auth:sanctum')
     ->post('/clients/delete/{id}', 'ClientsController@destroy');
 Route::middleware('auth:sanctum')

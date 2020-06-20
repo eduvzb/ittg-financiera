@@ -61,6 +61,7 @@ export default {
     name: 'FormClient',
     data: () => ({
       dialog: false,
+      editing: '',
     }),
     watch: {
       openModal: function (){
@@ -90,10 +91,17 @@ export default {
         },
         changeModal: function (){
           this.$emit('changeModal', this.dialog)
+          this.$emit('changeEditing', this.editing)
         },
         closeDialog: function (){
-          this.dialog = false;
-          this.changeModal();
+          this.dialog = false
+          this.editing = false
+          this.changeModal()
+        },
+        cleanInputs (){
+          this.value.name = ''
+          this.value.phone = ''
+          this.value.address = ''
         }
     }
 }

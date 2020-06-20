@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use Illuminate\Http\Request;
+use App\Imports\ClientsImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ClientsController extends Controller
 {
@@ -26,6 +28,14 @@ class ClientsController extends Controller
     public function create()
     {
         return view('clients.create');
+    }
+
+    public function importClients(Request $request)
+    {
+        
+        Excel::import(new ClientsImport, request()->file('file'));
+        return response()->json(true);
+
     }
 
     /**
@@ -83,7 +93,19 @@ class ClientsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => 'required',
+            'phone' => 'required',
+            'address' => 'required'
+        ]);
+
+        $client = Client::find($id);
+        $client->name = $request->name;
+        $client->address = $request->address;
+        $client->phone = $request->phone;
+        $client->save();
         
+        return response()->json(200);
     }
 
     /**

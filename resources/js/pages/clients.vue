@@ -21,6 +21,7 @@
                   @submit="choose" 
                   :openModal="openModal"
                   @changeModal="changeModal"
+                  @changeEditing="changeEditing"
                   >
                   </FormClient>
                 </v-col>
@@ -115,16 +116,34 @@
           .then(response => {
             console.log(response);
               this.getClients();
+              this.editing = false;
               this.$store.dispatch('setSnackbar',{
-                  text: 'El cliente ha sido añadido'
-                })
+                  text: 'El cliente ha sido añadido correctamente'
+              })
           })
             .catch(error => {
               console.log('Catch error', error);
+              this.editing = false;
+              this.openModal = false
             });     
       },
       edit (){
-
+        axios.post('/api/clients/edit/' + this.client.id, this.client)
+          .then(response => {
+            this.getClients();
+            this.editing = false
+            this.openModal = false
+            this.$store.dispatch('setSnackbar',{
+                text: 'El cliente ha sido actualizado correctamente'
+              })
+          })
+          .catch(error => {
+            this.editing = false
+            this.$store.dispatch('setSnackbar',{
+                text: 'Ocurrió un error al actualizar el cliente',
+                color: 'red'
+              })
+          })
       },
       choose (){
         if(this.editing == true){
@@ -145,6 +164,9 @@
       },
       changeModal: function (modal){
         this.openModal = modal;
+      },
+      changeEditing: function (value){
+        this.editing = value;
       }
     }
   }

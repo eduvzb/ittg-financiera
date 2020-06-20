@@ -18,10 +18,12 @@
       <v-card >
         <v-card-title class="headline">Importar clientes</v-card-title>
         <v-card-text>
-            <v-file-input
-            multiple label="File input"
-            show-size
-            ></v-file-input>
+          <input
+          type="file"
+          ref="file"
+          v-on:change="handleFileUpload()"
+          accept=".XLSX, .CSV"
+          >
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -36,9 +38,9 @@
           <v-btn
             color="green darken-1"
             text
-            @click="dialog = false"
+            @click="save"
           >
-            Agree
+            Importar
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -47,13 +49,43 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
     name: 'uploadFile',
     data () {
       return {
         dialog: false,
+        file: '',
       }
     },
+    methods: {
+      save(){
+        let formData = new FormData();
+        formData.append('file', this.file);
+        axios
+            .post( '/api/clients-import',
+                formData, {
+                  headers: {
+                    'Content-Type': 'multipart/form-data'
+                  }
+                }
+            ).then(function(){
+                this.dialog = true
+                this.$store.dispatch('setSnackbar',{
+                  text: 'Datos importados correctamente'
+                });
+            })
+            .catch(function(){
+                this.$store.dispatch('setSnackbar',{
+                  text: 'Ha ocurrido un error',
+                  color:"red"
+                })
+            });
+      },
+    handleFileUpload(){
+      this.file = this.$refs.file.files[0];
+    }
+  }
 }
 </script>
 

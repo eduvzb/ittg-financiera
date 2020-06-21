@@ -50,6 +50,7 @@
 
 <script>
   import { mapState } from 'vuex'
+  import Swal from 'sweetalert2'
   import formLoan from '@/js/components/FormLoan.vue'
   const axios = require("axios");
   export default {
@@ -143,14 +144,35 @@
       this.$store.dispatch('fillSelectClient');
       },
       deleteItem(item){
-        const index = this.loans.indexOf(item)
-        const id = this.loans[index].id;
-        axios.post('/api/loan/delete/' + id)
-          .then(response => {
-            this.getLoans();
-          })
-          .catch(error => {
-            console.log(error);
+        Swal.fire({
+        title: '¿Seguro desea eliminar el prestamo?',
+        text: "No podrá revertir está acción",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, eliminar'
+          }).then((result) => {
+            if (result.value) {
+              const index = this.loans.indexOf(item)
+              const id = this.loans[index].id;
+              axios.post('/api/loan/delete/' + id)
+                .then(response => {
+                  Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                  )
+                  this.getLoans();
+                })
+                .catch(error => {
+                  Swal.fire(
+                    'Ocurrió un error',
+                    'El prestamo no ha podido ser borrado',
+                    'error'
+                  )
+                })
+            }
           })
       },
       async findLoan (item){

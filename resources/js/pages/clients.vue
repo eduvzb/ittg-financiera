@@ -60,6 +60,7 @@
 </template>
 
 <script>
+  import Swal from 'sweetalert2'
   import { mapState } from 'vuex'
   import FormClient from '@/js/components/FormClient.vue'
   import uploadFile from '@/js/components/uploadFile.vue'
@@ -100,15 +101,36 @@
     },
     methods: {
       deleteItem (item){
-      const index = this.clients.indexOf(item)
-      const id = this.clients[index].id;
-        axios.post('/api/clients/delete/' + id)
-          .then(response => {
-            this.getClients();
+        Swal.fire({
+        title: '¿Seguro desea eliminar este cliente?',
+        text: "No podrá revertir está acción",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, eliminar'
+          }).then((result) => {
+            if (result.value) {
+              const index = this.clients.indexOf(item)
+              const id = this.clients[index].id;
+              axios.post('/api/clients/delete/' + id)
+                .then(response => {
+                  this.getClients()
+                  Swal.fire(
+                    'Deleted!',
+                    'El cliente ha sido elminado',
+                    'success'
+                  )
+                })
+                .catch(error => {
+                  Swal.fire(
+                    'Ocurrió un error',
+                    'El cliente no ha podido ser borrado',
+                    'error'
+                  )
+                })
+            }
           })
-          .catch(error => {
-            console.log(error);
-          });
     },
       save (){
         console.log(this.client);

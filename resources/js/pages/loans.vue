@@ -12,6 +12,7 @@
           @submit = "choose"
           :openModal="openModal"
           @changeModal="changeModal"
+          @changeEditing="changeEditing"
           >
           </formLoan>
         </v-card-title>
@@ -36,7 +37,7 @@
                 </v-btn>
                 <v-btn color="primary" 
                 fab x-small dark
-                @click="findClient(item)"
+                @click="findLoan(item)"
                 >
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
@@ -52,7 +53,7 @@
   import formLoan from '@/js/components/FormLoan.vue'
   const axios = require("axios");
   export default {
-    name: 'clients',
+    name: 'loans',
     components: {
       formLoan
     },
@@ -84,6 +85,7 @@
         ...mapState({
             loans: state=>state.loans,
             clientsNames: state=>state.clientsNames,
+            LoanSelected: state=>state.loan
         })
     },
     mounted () {
@@ -101,7 +103,24 @@
           this.save()
       },
       edit (){
-        //
+        axios.post('/api/loans/edit/' + this.loan.id, this.loan)
+          .then(response => {
+            this.getLoans();
+            this.editing = false
+            this.openModal = false
+            this.$store.dispatch('setSnackbar',{
+                text: 'El cliente ha sido actualizado correctamente'
+              })
+          })
+          .catch(error => {
+            this.editing = false
+            this.openModal = false
+            this.$store.dispatch('setSnackbar',{
+                text: 'Ocurrió un error al actualizar el prestamo',
+                color: 'red'
+              })
+            console.log(error.data)  
+          })
       },
       save (){
         axios.post('/api/loan', this.loan)
@@ -111,7 +130,11 @@
                   text: 'El prestamo ha sido añadido'
                 })
           })
-          .catch(error => 'error')
+          .catch(error => {
+            console.log('Catch error', error);
+            this.editing = false;
+            this.openModal = false
+          })
       },
       getLoans (){
           this.$store.dispatch('getLoans');
@@ -129,6 +152,18 @@
           .catch(error => {
             console.log(error);
           })
+      },
+      async findLoan (item){
+        this.editing = true;
+        const index = this.loans.indexOf(item)
+        const id = this.loans[index].id;
+        console.log(id);
+        await this.$store.dispatch('getLoan', id);
+          this.loan = Object.assign({}, this.loan, this.LoanSelected)
+            this.openModal = true;
+      },
+      changeEditing: function (value){
+        this.editing = value;
       }
     }
   }

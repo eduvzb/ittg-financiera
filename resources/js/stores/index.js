@@ -6,19 +6,20 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
     state: {
-        barColor: 'rgba(0, 0, 0, .8), rgba(0, 0, 0, .8)',
-        barImage: 'https://demos.creative-tim.com/material-dashboard/assets/img/sidebar-2.jpg',
-        drawerOpen: true,
-        drawer: null,
-        isAuthenticated: JSON.parse(localStorage.getItem('auth')) || false,
-        user: {},
-        clients: [],
-        loans: [],
-        clientsNames:[],
-        client: {},
-        paymentsIndex: [],
-        payments: [],
-        snackbar: {},
+      barColor: 'rgba(0, 0, 0, .8), rgba(0, 0, 0, .8)',
+      barImage: 'https://demos.creative-tim.com/material-dashboard/assets/img/sidebar-2.jpg',
+      drawerOpen: true,
+      drawer: null,
+      isAuthenticated: JSON.parse(localStorage.getItem('auth')) || false,
+      user: {},
+      clients: [],
+      loans: [],
+      clientsNames:[],
+      client: {},
+      paymentsIndex: [],
+      payments: [],
+      snackbar: {},
+      loan: {},
     },
     actions: {
         setSnackbar ({commit}, snackbar){
@@ -129,13 +130,27 @@ const store = new Vuex.Store({
                 });
             });
         },
+        getLoan ({ commit } , id) {
+          return new Promise((resolve, reject) => {
+            axios.get('/api/loans/find/' + id)
+              .then(response => {
+                  resolve();
+                  commit('SET_LOAN', response.data);
+                  console.log(response.data)
+              })
+              .catch(error => {
+                  resolve()
+                  commit('SET_LOAN', null);
+              });
+          });
+      },
         drawerToggle ({ commit }) {
           commit('DRAWER_TOGGLE');
         }
     },
     mutations: {
-        SET_BAR_IMAGE (state, payload) {
-            state.barImage = payload
+        SET_LOAN (state, loan) {
+          state.loan = loan
         },
         SET_DRAWER (state, payload) {
         state.drawer = payload

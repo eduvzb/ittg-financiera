@@ -84,9 +84,10 @@ class LoansController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function find($id)
     {
-        //
+        $loan = Loan::with('client')->find($id);
+        return response()->json($loan);
     }
 
     /**
@@ -95,10 +96,6 @@ class LoansController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -110,6 +107,46 @@ class LoansController extends Controller
     public function update(Request $request, $id)
     {
         $loan = Loan::find($id);
+        $saldoAbonado = $loan->saldoAbonado;
+       
+        if( $saldoAbonado > 0){
+            return response()->json(false)
+                ->withError('Error','No puede editar un prestamo que tenga pagos registrados.');
+        }
+        else{ //Editar el prestamo
+
+            $loan->client_id = $request->client_id;
+            $loan->amount = $request->amount;
+            $loan->payments_number = $request->payments_number;
+            $loan->fee = $request->fee;
+            $loan->ministry_date = $request->ministry_date;
+            $loan->due_date = $request->due_date;
+            $loan->finished = 0;
+            $loan->save();
+
+            //Borrar payments
+            Payment::where('loan_id',$id)->delete();
+
+            $date = Carbon::createFromDate($loan->ministry_date); //Guarda la fecha en la varible date
+            $count = 0;
+            while($count < $loan->payments_number)
+            {
+                $date->addDay(); //Incrementa un día a la fecha date
+                if($date->isWeekday()) //Verifica si date es día de semana
+                {
+                    $payment = new Payment();
+                    $payment->client_id = $loan->client_id;
+                    $payment->loan_id = $loan->id;
+                    $payment->number = $count+1;
+                    $payment->amount = $loan->fee;
+                    $payment->received_amount = 0;
+                    $payment->payment_date = $date;
+                    $payment->save();
+                    $count++;
+                }
+            }
+            return response()->json(true);
+        }
     }
 
     /**

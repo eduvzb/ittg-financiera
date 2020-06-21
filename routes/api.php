@@ -39,6 +39,10 @@ Route::middleware('auth:sanctum')
     ->get('/client/{id}', 'ClientsController@edit');
 
 Route::middleware('auth:sanctum')
+    ->get('/loans/find/{id}', 'LoansController@find');
+Route::middleware('auth:sanctum')
+    ->post('/loans/edit/{id}', 'LoansController@update');
+Route::middleware('auth:sanctum')
     ->get('/loans', 'LoansController@index');
 Route::middleware('auth:sanctum')
     ->post('/loan', 'LoansController@store');

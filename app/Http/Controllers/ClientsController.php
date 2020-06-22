@@ -20,6 +20,11 @@ class ClientsController extends Controller
         return response()->json($clients);
     }
 
+    public function numberClients (){
+        $numClients = Client::select('id')->count();
+        return response()->json($numClients);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

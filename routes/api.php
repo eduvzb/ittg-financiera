@@ -26,6 +26,8 @@ Route::middleware('auth:sanctum')
     ->post('/user-edit', 'UsersController@update');
 
 Route::middleware('auth:sanctum')
+    ->get('/clients/number', 'ClientsController@numberClients');   
+Route::middleware('auth:sanctum')
     ->post('/clients/edit/{id}', 'ClientsController@update');    
 Route::middleware('auth:sanctum')
     ->post('/clients-import', 'ClientsController@importClients');

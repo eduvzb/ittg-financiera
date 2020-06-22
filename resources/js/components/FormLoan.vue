@@ -45,7 +45,7 @@
                   label="Número de pagos*"
                   required
                   type="number"
-                  v-model="value.payments_number"
+                  v-model="paymentsNumber"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
@@ -54,6 +54,7 @@
                   required
                   type="number"
                   v-model="value.fee"
+                  @change="updDate"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -64,15 +65,19 @@
                   required
                   type="date"
                   v-model="value.ministry_date"
+                  @change="updDate"
                 ></v-text-field>
+                <span>{{ hoy }}</span>
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field
                   label="Fecha de vencimiento*"
                   required
                   type="date"
+                  disabled
                   v-model="value.due_date"
                 ></v-text-field>
+                 <span>{{ value.due_date }}</span>
               </v-col>
             </v-row>
           </v-container>
@@ -89,16 +94,19 @@
 </template>
 
 <script>
+import moment from 'moment-business-days'
 import { mapState } from 'vuex'
 export default {
     name: 'FormLoan',
     data: () => ({
       dialog: false,
+      paymentsNumber: 0,
     }),
     watch: {
       openModal: function (){
       this.dialog = this.openModal;  
       }
+
     },
     props: {
       value:{
@@ -122,22 +130,38 @@ export default {
     computed: {
         ...mapState({
             clientsNames: state=>state.clientsNames
-          })
+          }),
+        hoy (){
+          return moment().format('YYYY-MM-DD');
+        },
+        dueDate (){
+          let date = moment(this.value.ministry_date).businessAdd(this.paymentsNumber)._d
+          date = moment(date).format('YYYY-MM-DD')
+          return date
+        }
+    },
+    mounted () {
+      this.value.ministry_date = moment().format('YYYY-MM-DD')
+      this.value.due_date = this.dueDate
     },
     methods: {
-        submit: function () {
+        updDate (){
+          this.value.due_date = this.dueDate
+        },
+        submit () {
             this.dialog = false;
             this.$emit('submit', this.value);
         },
-        changeModal: function (){
+        changeModal (){
           this.$emit('changeModal', this.dialog)
           this.$emit('changeEditing', this.editing)
         },
-        closeDialog: function (){
+        closeDialog (){
           this.dialog = false
           this.editing = false
           this.changeModal();
-        }
+        },
+
     }
 }
 </script>

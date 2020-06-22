@@ -160,7 +160,7 @@
                 .then(response => {
                   Swal.fire(
                     'Deleted!',
-                    'Your file has been deleted.',
+                    'El prestamo ha sido eliminado',
                     'success'
                   )
                   this.getLoans();

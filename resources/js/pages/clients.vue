@@ -29,8 +29,6 @@
             </v-col>
           </v-row>
             
-            
-           
         </v-card-title>
           <v-data-table 
           :headers="headers"
@@ -77,7 +75,7 @@
         client: {
           name: '',
           phone: '',
-          address: ''
+          address: '',
         },
         headers: [
           { text: 'id', value: 'id' },

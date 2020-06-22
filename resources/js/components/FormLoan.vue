@@ -19,74 +19,86 @@
         </v-card-title>
         <v-card-text>
           <v-container>
-            <v-row>
-              <v-col cols="12" sm="6" md="6">
-                <v-select
-                :items="clientsNames"
-                label="Cliente"
-                item-text="name"
-                item-value="id"
-                v-model="value.client_id"
-                ></v-select>
-              </v-col>
-              <v-col cols="12" sm="6" md="6">
-                <v-text-field 
-                label="Cantidad*" 
-                prefix="$"
-                type="number"
-                v-model="value.amount"
-                >
-                </v-text-field>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12" sm="6" md="6">
-                <v-text-field
-                  label="Número de pagos*"
-                  required
+            <v-form
+            ref="form"
+            v-model="valid"
+            lazy-validation
+            >
+              <v-row>
+                <v-col cols="12" sm="6" md="6">
+                  <v-select
+                  :items="clientsNames"
+                  :rules="clientRules"
+                  label="Cliente"
+                  item-text="name"
+                  item-value="id"
+                  v-model="value.client_id"
+                  ></v-select>
+                </v-col>
+                <v-col cols="12" sm="6" md="6">
+                  <v-text-field 
+                  :rules="amountRules"
+                  label="Cantidad*" 
+                  prefix="$"
                   type="number"
-                  v-model="paymentsNumber"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="6">
-                <v-text-field
-                  label="Cuota*"
-                  required
-                  type="number"
-                  v-model="value.fee"
-                  @change="updDate"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-             <v-row>
-              <v-col cols="12" sm="6" md="6">
-                <v-text-field
-                  label="Fecha de ministración*"
-                  required
-                  type="date"
-                  v-model="value.ministry_date"
-                  @change="updDate"
-                ></v-text-field>
-                <span>{{ hoy }}</span>
-              </v-col>
-              <v-col cols="12" sm="6" md="6">
-                <v-text-field
-                  label="Fecha de vencimiento*"
-                  required
-                  type="date"
-                  disabled
-                  v-model="value.due_date"
-                ></v-text-field>
-                 <span>{{ value.due_date }}</span>
-              </v-col>
-            </v-row>
+                  v-model="value.amount"
+                  >
+                  </v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" sm="6" md="6">
+                  <v-text-field
+                    :rules="numberRules"
+                    label="Número de pagos*"
+                    required
+                    type="number"
+                    v-model="value.payments_number"
+                    @change="updDate"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="6">
+                  <v-text-field
+                    :rules="feeRules"
+                    label="Cuota*"
+                    required
+                    type="number"
+                    v-model="value.fee"
+                   
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" sm="6" md="6">
+                  <v-text-field
+                    :rules="ministryRules"
+                    label="Fecha de ministración*"
+                    required
+                    type="date"
+                    v-model="value.ministry_date"
+                    @change="updDate"
+                  ></v-text-field>
+                  <span>{{ hoy }}</span>
+                </v-col>
+                <v-col cols="12" sm="6" md="6">
+                  <v-text-field
+                    label="Fecha de vencimiento*"
+                    required
+                    type="date"
+                    readonly
+                    v-model="value.due_date"
+                  ></v-text-field>
+                  <span>{{ value.due_date }}</span>
+                </v-col>
+              </v-row>
+            </v-form>
           </v-container>
           <small>*Indica los campos obligatorios</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="closeDialog">Close</v-btn>
-          <v-btn color="blue darken-1" text @click="submit">Save</v-btn>
+          <v-btn :disabled="!valid" color="blue darken-1" text @click="submit">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -101,6 +113,25 @@ export default {
     data: () => ({
       dialog: false,
       paymentsNumber: 0,
+      valid: true,
+      clientRules: [
+        v => !!v || 'El nombre del cliente es requerido',
+      ],
+      amountRules: [
+        v => !!v || 'La cantidad es requerida',
+      ],
+      numberRules: [
+        v => !!v || 'La cantidad de pagos es requerida',
+      ],
+      feeRules: [
+        v => !!v || 'La couta es requerida',
+      ],
+      ministryRules: [
+        v => !!v || 'La fecha de ministro es requerida',
+      ],
+      dueRules: [
+        v => !!v || 'La fecha de vencimiento es requerida',
+      ],
     }),
     watch: {
       openModal: function (){
@@ -135,7 +166,7 @@ export default {
           return moment().format('YYYY-MM-DD');
         },
         dueDate (){
-          let date = moment(this.value.ministry_date).businessAdd(this.paymentsNumber)._d
+          let date = moment(this.value.ministry_date).businessAdd(this.value.payments_number)._d
           date = moment(date).format('YYYY-MM-DD')
           return date
         }

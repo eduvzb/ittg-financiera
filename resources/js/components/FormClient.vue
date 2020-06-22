@@ -73,13 +73,13 @@ export default {
       valid: true,
       editing: '',
       nameRules: [
-        v => !!v || 'Name is required',
+        v => !!v || 'El nombre es requerido',
       ],
       phoneRules: [
-        v => !!v || 'Phone number is required',
+        v => !!v || 'El número de telefono es requerido',
       ],
       addressRules: [
-        v => !!v || 'Address is required',
+        v => !!v || 'La dirección es requerida',
       ],
     }),
     watch: {

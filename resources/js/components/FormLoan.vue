@@ -78,7 +78,6 @@
                     v-model="value.ministry_date"
                     @change="updDate"
                   ></v-text-field>
-                  <span>{{ hoy }}</span>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
                   <v-text-field
@@ -88,7 +87,6 @@
                     readonly
                     v-model="value.due_date"
                   ></v-text-field>
-                  <span>{{ value.due_date }}</span>
                 </v-col>
               </v-row>
             </v-form>
